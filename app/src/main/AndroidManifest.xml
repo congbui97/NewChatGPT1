@@ -25,7 +25,7 @@
         android:theme="@style/Theme.NewChatGPT"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity2"
+            android:name=".ChatActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -36,9 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ChatActivity"
-            android:label="Chat with Android"></activity>
 
         <service
             android:name=".ChatHeadService"

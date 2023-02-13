@@ -14,7 +14,7 @@
         android:layout_weight="5"
         android:orientation="horizontal"
         android:layout_margin="30dp"
-        android:background="@drawable/buttonimg">
+        android:background="@drawable/doraemon">
 
 
 
@@ -69,7 +69,7 @@
         <ImageView
             android:id="@+id/imgAssistant"
             android:layout_width="0dp"
-            android:src="@drawable/baseline_chat_24"
+            android:src="@drawable/baseline_assistant_24"
             android:layout_height="match_parent"
             android:layout_weight="3"/>
 

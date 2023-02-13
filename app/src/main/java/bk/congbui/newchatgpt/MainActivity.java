@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,11 +27,14 @@ public class MainActivity extends AppCompatActivity {
     private String api_key = "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";
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
+    private ImageView imgChat , imgAssistant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        unit();
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
@@ -88,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //        thread.start();
+    }
+
+    private void unit() {
+        imgChat = findViewById(R.id.imgChat);
+        imgAssistant = findViewById(R.id.imgAssistant);
     }
 
     public void updateText() {
@@ -153,15 +162,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initializeView() {
-        findViewById(R.id.notify_me).setOnClickListener(new View.OnClickListener() {
+        imgChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startService(new Intent(MainActivity.this, ChatHeadService.class));
-//                finish();
-                Intent intent = new Intent(MainActivity.this , MainActivity2.class);
+                Intent intent = new Intent(MainActivity.this , ChatActivity.class);
                 startActivity(intent);
             }
         });
+
+
+        imgAssistant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startService(new Intent(MainActivity.this, ChatHeadService.class));
+                finish();
+
+            }
+        });
+
     }
 
     @Override
