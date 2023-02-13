@@ -8,35 +8,76 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="horizontal"
+        android:layout_margin="30dp"
+        android:background="@drawable/buttonimg">
+
+
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="30dp"
+        android:background="@drawable/buttonimg">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:text="Chat"
+            android:textStyle="bold"
+            android:textSize="50sp"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_weight="7"/>
+
         <ImageView
             android:id="@+id/imgChat"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:src="@drawable/baseline_chat_24"
             android:layout_height="match_parent"
-            android:background="@drawable/"/>
+            android:layout_weight="3"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_margin="30dp"
+        android:background="@drawable/buttonimg">
+
+        <TextView
+            android:id="@+id/tvAssistant"
+            android:layout_width="0dp"
+            android:text="Assistant"
+            android:textStyle="bold"
+            android:textSize="50sp"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_weight="7"/>
+
+        <ImageView
+            android:id="@+id/imgAssistant"
+            android:layout_width="0dp"
+            android:src="@drawable/baseline_chat_24"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
 
     </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/imgListen"
-        android:layout_width="match_parent"
 
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
 
-    <Button
-        android:id="@+id/notify_me"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="Create chat head"/>
+
 
 </LinearLayout>
