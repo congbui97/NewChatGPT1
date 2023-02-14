@@ -23,8 +23,6 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
-    private String url = "https://api.openai.com/v1/completions";
-    private String api_key = "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";
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
     private ImageView imgChat , imgAssistant;
@@ -52,79 +50,12 @@ public class MainActivity extends AppCompatActivity {
             checkPermissions(Manifest.permission.RECORD_AUDIO);
         }
 
-//        updateText();
-
-
-//        Thread thread = new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                try {
-//                    OpenAiService service = new OpenAiService("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");
-//                    Engine davinci = service.getEngine("davinci");
-//                    ArrayList<CompletionChoice> storyArray = new ArrayList<CompletionChoice>();
-//
-//                    CompletionRequest completionRequest = CompletionRequest.builder()
-//                            .prompt("The following is a spooky story written for kids, just in time for Halloween. Everyone always talks about the old house at the end of the street, but I couldn't believe what happened when I went inside.")
-//                            .temperature(0.7)
-//                            .maxTokens(2000)
-//                            .topP(1.0)
-//                            .frequencyPenalty(0.0)
-//                            .presencePenalty(0.3)
-//                            .echo(true)
-//                            .build();
-//                    service.createCompletion("davinci", completionRequest).getChoices().forEach(line -> {storyArray.add(line);});
-////                    tvHello.setText(storyArray.toString());
-//                    if (storyArray.size() > 0) {
-//                        for (int i = 0; i < storyArray.size(); i++) {
-//                            Toast toast =  Toast.makeText(getApplicationContext(), storyArray.get(i).getText(), Toast.LENGTH_SHORT);
-//                            toast.show();
-//                        }
-//                    } else {
-//                        Toast toast =  Toast.makeText(getApplicationContext(), "storyArray is null", Toast.LENGTH_SHORT);
-//                        toast.show();
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
-//        thread.start();
     }
 
     private void unit() {
         imgChat = findViewById(R.id.imgChat);
         imgAssistant = findViewById(R.id.imgAssistant);
     }
-
-    public void updateText() {
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                try {
-                    List<String> stop  = new ArrayList<>();
-                    stop.add(" Human:");
-                    stop.add(("AI:"));
-                    OpenAI openAI = new OpenAI(api_key);
-                    Response<CompletionResponse> response = openAI.createCompletion("text-davinci-003"
-                    ,"hello world" , 0.6 , 4000 , 1 , 0.0 , 0.6 ,stop );
-
-                    if (response.isSuccessful()){
-                        response.body().getChoices().forEach(choices -> {
-                            choices.xuatLog();
-                        });
-                    }
-                }catch (Exception e){
-                    Log.d("aaa" , e.getMessage());
-                }
-            }
-        };
-
-        thread.start();
-    }
-
 
     private void checkPermissions(String permission) {
         if (ContextCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
@@ -135,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
         }
     }
-
-    // This function is called when the user accepts or decline the permission.
-    // Request Code is used to check which permission called this function.
-    // This request code is provided when the user is prompt for permission.
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -201,9 +128,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void callOpenAIApi(){
-
-    }
 }
 
 

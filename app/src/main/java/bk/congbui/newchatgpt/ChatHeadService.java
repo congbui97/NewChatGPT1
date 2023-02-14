@@ -81,70 +81,70 @@ public class ChatHeadService extends Service {
 
         //Drag and move chat head using user's touch action.
         chatHeadImage = (ImageView) mChatHeadView.findViewById(R.id.chat_head_profile_iv);
-//        chatHeadImage.setOnTouchListener(new View.OnTouchListener() {
-//            private int lastAction;
-//            private int initialX;
-//            private int initialY;
-//            private float initialTouchX;
-//            private float initialTouchY;
+        chatHeadImage.setOnTouchListener(new View.OnTouchListener() {
+            private int lastAction;
+            private int initialX;
+            private int initialY;
+            private float initialTouchX;
+            private float initialTouchY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //finishView.setEnabled(true);
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        //remember the initial position.
+                        initialX = params.x;
+                        initialY = params.y;
+
+                        //get the touch location
+                        initialTouchX = event.getRawX();
+                        initialTouchY = event.getRawY();
+
+                        lastAction = event.getAction();
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        //As we implemented on touch listener with ACTION_MOVE,
+                        //we have to check if the previous action was ACTION_DOWN
+                        //to identify if the user clicked the view or not.
+                        if (lastAction == MotionEvent.ACTION_DOWN) {
+                            //Open the chat conversation click.
+                            Intent intent = new Intent(ChatHeadService.this, ChatActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
 //
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                //finishView.setEnabled(true);
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//
-//                        //remember the initial position.
-//                        initialX = params.x;
-//                        initialY = params.y;
-//
-//                        //get the touch location
-//                        initialTouchX = event.getRawX();
-//                        initialTouchY = event.getRawY();
-//
-//                        lastAction = event.getAction();
-//                        return true;
-//                    case MotionEvent.ACTION_UP:
-//                        //As we implemented on touch listener with ACTION_MOVE,
-//                        //we have to check if the previous action was ACTION_DOWN
-//                        //to identify if the user clicked the view or not.
-//                        if (lastAction == MotionEvent.ACTION_DOWN) {
-//                            //Open the chat conversation click.
-////                            Intent intent = new Intent(ChatHeadService.this, ChatActivity.class);
-////                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                            startActivity(intent);
-////
-////                            //close the service and remove the chat heads
-////                            stopSelf();
-////                            Log.d("aaa","start listening");
-////                            Toast.makeText(getApplicationContext() , "start listening" , Toast.LENGTH_LONG).show();
-////                            listenSpeak();
-//                        }
-//                        lastAction = event.getAction();
-//                        return true;
-//                    case MotionEvent.ACTION_MOVE:
-//                        //Calculate the X and Y coordinates of the view.
-//                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
-//                        params.y = initialY + (int) (event.getRawY() - initialTouchY);
-//
-//                        //Update the layout with new X & Y coordinate
-//                        mWindowManager.updateViewLayout(mChatHeadView, params);
-//                        lastAction = event.getAction();
-//                        return true;
-//                    case MotionEvent.ACTION_CANCEL:
-//                        finishView.setEnabled(false);
-//                        return true;
-//
-//                }
-//                return false;
-//            }
-//
-//
-//            @Override
-//            protected Object clone() throws CloneNotSupportedException {
-//                return super.clone();
-//            }
-//        });
+                            //close the service and remove the chat heads
+//                            stopSelf();
+//                            Log.d("aaa","start listening");
+//                            Toast.makeText(getApplicationContext() , "start listening" , Toast.LENGTH_LONG).show();
+                            listenSpeak();
+                        }
+                        lastAction = event.getAction();
+                        return true;
+                    case MotionEvent.ACTION_MOVE:
+                        //Calculate the X and Y coordinates of the view.
+                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        params.y = initialY + (int) (event.getRawY() - initialTouchY);
+
+                        //Update the layout with new X & Y coordinate
+                        mWindowManager.updateViewLayout(mChatHeadView, params);
+                        lastAction = event.getAction();
+                        return true;
+                    case MotionEvent.ACTION_CANCEL:
+                        finishView.setEnabled(false);
+                        return true;
+
+                }
+                return false;
+            }
+
+
+            @Override
+            protected Object clone() throws CloneNotSupportedException {
+                return super.clone();
+            }
+        });
 
         chatHeadImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -153,14 +153,14 @@ public class ChatHeadService extends Service {
                 return false;
             }
         });
-        chatHeadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chatHeadImage.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
-                Toast.makeText(getApplicationContext() , "start listening" , Toast.LENGTH_LONG).show();
-                listenSpeak();
-            }
-        });
+//        chatHeadImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                chatHeadImage.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
+//                Toast.makeText(getApplicationContext() , "start listening" , Toast.LENGTH_LONG).show();
+//                listenSpeak();
+//            }
+//        });
     }
 
     private void unit() {
