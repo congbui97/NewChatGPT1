@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     public interface OpenAI {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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"
+                "Authorization: Bearer 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"
         })
         @POST("/v1/completions")
         Call<ResponseBody> generateText(@Body RequestBody requestBody);
@@ -60,7 +61,6 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         unit();
-
 
     }
 
@@ -88,9 +88,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 textSend = edtMessage.getText().toString();
                 if (textSend != null && textSend.equals("")==false ){
-                    data.add(new Message(textSend , 0));
-                    adapter.notifyDataSetChanged();
-                    lvMessage.setSelection(data.size() - 1);
+
+                    addAdapter(textSend , 0);
                     callApi();
                     edtMessage.setText("");
                     startLoadingDialog();
@@ -104,33 +103,8 @@ public class ChatActivity extends AppCompatActivity {
     private  void  callApi(){
 
         //set time out for api
+        Call<ResponseBody> call = MainActivity.createApi(textSend);
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .callTimeout(2, TimeUnit.MINUTES)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.openai.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build()).build();
-
-        OpenAI api = retrofit.create(OpenAI.class);
-
-        String requestJson =
-                "{" +
-                        "\"model\":\"text-davinci-003\"," +
-                        "\"prompt\":\"" +
-                        textSend +
-                        "\"," +
-                        "\"max_tokens\":4000," +
-                        "\"temperature\":0" +
-                        "}";
-        Log.d("aaa", requestJson);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestJson);
-
-        Call<ResponseBody> call = api.generateText(requestBody);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -148,9 +122,7 @@ public class ChatActivity extends AppCompatActivity {
                             if (lastValue.startsWith("\n\n")){
                                 lastValue = lastValue.substring(2);
                             }
-                            data.add(new Message(lastValue,1));
-                            adapter.notifyDataSetChanged();
-                            lvMessage.setSelection(data.size() - 1);
+                            addAdapter(lastValue , 1);
                             dismissDialog();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
@@ -167,9 +139,7 @@ public class ChatActivity extends AppCompatActivity {
                     // Handle error response
                     try {
                         String error = response.errorBody().string();
-                        data.add(new Message("Server hiện đang quá tải, vui lòng thử lại...",2));
-                        adapter.notifyDataSetChanged();
-                        lvMessage.setSelection(data.size() - 1);
+                        addAdapter("Server hiện đang quá tải, vui lòng thử lại..." , 2);
                         dismissDialog();
 
 
@@ -195,6 +165,8 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+
+
     public void startLoadingDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
         LayoutInflater inflater =  getLayoutInflater();
@@ -205,6 +177,13 @@ public class ChatActivity extends AppCompatActivity {
     }
     public void dismissDialog(){
         dialog.dismiss();
+    }
+
+    private void addAdapter(String textSend , int pos){
+        MainActivity.speech.speak(textSend,TextToSpeech.QUEUE_FLUSH,null);
+        data.add(new Message(textSend , pos));
+        adapter.notifyDataSetChanged();
+        lvMessage.setSelection(data.size() - 1);
     }
 
 }

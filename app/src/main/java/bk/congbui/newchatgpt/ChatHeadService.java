@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,8 +26,11 @@ public class ChatHeadService extends Service {
     private WindowManager mWindowManager;
     private View mChatHeadView,finishView;
     private SpeechRecognizer speechRecognizer = null;
+    private Intent speechRecognizerIntent;
     private WindowManager.LayoutParams params;
     private  ImageView chatHeadImage;
+    private String result = "";
+
     public ChatHeadService() {
     }
 
@@ -75,12 +79,14 @@ public class ChatHeadService extends Service {
             @Override
             public void onClick(View v) {
                 //close the service and remove the chat head from the window
-                stopSelf();
+                speechRecognizer.stopListening();
+                MainActivity.speech.speak("xin chào" , TextToSpeech.QUEUE_FLUSH , null);
+//                stopSelf();
             }
         });
 
         //Drag and move chat head using user's touch action.
-        chatHeadImage = (ImageView) mChatHeadView.findViewById(R.id.chat_head_profile_iv);
+        chatHeadImage = mChatHeadView.findViewById(R.id.chat_head_profile_iv);
         chatHeadImage.setOnTouchListener(new View.OnTouchListener() {
             private int lastAction;
             private int initialX;
@@ -110,9 +116,9 @@ public class ChatHeadService extends Service {
                         //to identify if the user clicked the view or not.
                         if (lastAction == MotionEvent.ACTION_DOWN) {
                             //Open the chat conversation click.
-                            Intent intent = new Intent(ChatHeadService.this, ChatActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+//                            Intent intent = new Intent(ChatHeadService.this, ChatActivity.class);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
 //
                             //close the service and remove the chat heads
 //                            stopSelf();
@@ -182,16 +188,11 @@ public class ChatHeadService extends Service {
         params.y = 100;
         mWindowManager.addView(mChatHeadView, params);
 
-
-    }
-
-    private String listenSpeak(){
-        final String[] result = {""};
-        Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL , RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 2000);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true); // For streaming result
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle bundle) {
@@ -227,10 +228,10 @@ public class ChatHeadService extends Service {
             public void onResults(Bundle bundle) {
                 ArrayList<String> data =  bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 if (data.get(0) != null){
-                    result[0] = data.get(0);
+                    result = data.get(0);
                     speechRecognizer.stopListening();
                     chatHeadImage.setBackgroundResource(R.drawable.ic_android_circle);
-                    Log.d("aaa",result[0]);
+                    Log.d("aaa",result);
                     Log.d("aaa","listen result finish");
                 }
 
@@ -244,15 +245,19 @@ public class ChatHeadService extends Service {
             public void onEvent(int i, Bundle bundle) {
             }
         });
-        speechRecognizer.startListening(speechRecognizerIntent);
 
-        return result[0];
+
+
+    }
+
+    private void listenSpeak(){
+        speechRecognizer.startListening(speechRecognizerIntent);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mChatHeadView != null) mWindowManager.removeView(mChatHeadView);
-        speechRecognizer.stopListening();
+//        speechRecognizer.stopListening();
     }
 }

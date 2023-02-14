@@ -58,8 +58,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         }
 
-
-
         return rowView;
 
     }
