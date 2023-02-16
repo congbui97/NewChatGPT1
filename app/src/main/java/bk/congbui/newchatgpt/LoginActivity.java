@@ -2,16 +2,19 @@ package bk.congbui.newchatgpt;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtUsername,edtPassword,edtRePassword;
     private Button btnLoginOrSignup;
     private TextView tvSignUp;
+    private AnimationDrawable rocketAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,20 @@ public class LoginActivity extends AppCompatActivity {
         edtRePassword = findViewById(R.id.edtRepassword);
         btnLoginOrSignup = findViewById(R.id.btnLoginOrSignup);
         tvSignUp = findViewById(R.id.tvSignup);
+
+        ImageView rocketImage =  findViewById(R.id.imgLogo);
+        rocketImage.setBackgroundResource(R.drawable.cat_animation);
+        rocketAnimation = (AnimationDrawable) rocketImage.getBackground();
+//        rocketAnimation.start();
+        rocketImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rocketImage.setBackgroundResource(R.drawable.cat_animation);
+                rocketAnimation = (AnimationDrawable) rocketImage.getBackground();
+                rocketAnimation.run();
+
+            }
+        });
     }
 
     private void init(){
