@@ -6,12 +6,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/app_background"
     android:layout_gravity="center"
     tools:context=".LoginActivity">
-
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="4"
+        android:orientation="vertical">
+        <ImageView
+            android:background="@drawable/img_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edtUsername"
+            android:layout_width="match_parent"
+            android:hint="Username:..."
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:hint="Password:..."
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <EditText
+            android:id="@+id/edtRepassword"
+            android:layout_width="match_parent"
+            android:hint="Repassword:..."
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/btnLoginOrSignup"
+            android:layout_width="match_parent"
+            android:text="Login"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+            <TextView
+                android:id="@+id/tvSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign up"
+                android:gravity="center"
+                android:textColor="@color/blue"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
 
 </LinearLayout>
