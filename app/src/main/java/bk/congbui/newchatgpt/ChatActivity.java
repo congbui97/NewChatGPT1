@@ -44,7 +44,8 @@ public class ChatActivity extends AppCompatActivity {
     public interface OpenAI {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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"
+                "Authorization: Bearer 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",
+                "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/completions")
         Call<ResponseBody> generateText(@Body RequestBody requestBody);

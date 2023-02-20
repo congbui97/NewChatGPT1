@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     //list image tu trai qua phai
@@ -142,40 +143,58 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginOrSignUp() {
-        if (mode == LOGIN_MODE){
-            DatabaseReference mReference = FirebaseDatabase.getInstance().getReference("user");
-            mReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if (!task.isSuccessful()) {
-                        Log.e("firebase", "Error getting data", task.getException());
-                    }
-                    else {
-                        Log.d("firebase", String.valueOf(task.getResult().getValue()));
+        String username = edtUsername.getText().toString().trim();
+        String pass = edtPassword.getText().toString();
+        String path = "user/" + username;
 
-                    }
+        if (mode == LOGIN_MODE){
+            DatabaseReference mReference = FirebaseDatabase.getInstance().getReference(path);
+            mReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String usernameServer = snapshot.child("userName").getValue(String.class);
+//                    long keyMoney = snapshot.child("keyMoney").getValue(Long.class);
+//                    long location = snapshot.child("location").getValue(Long.class);
+//                    int pos = snapshot.child("pos").getValue(Integer.class);
+                    String passServer = snapshot.child("passWord").getValue(String.class);
+                    checkLogin(username,usernameServer,pass,passServer);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
             });
 
 
         }else if (mode == SIGN_UP_MODE){
-            String username = edtUsername.getText().toString();
-            String pass = edtPassword.getText().toString();
             String repass = edtRePassword.getText().toString();
-
             if (pass.equals(repass) == true){
-                DatabaseReference database = FirebaseDatabase.getInstance().getReference("user/cb");
+                DatabaseReference database = FirebaseDatabase.getInstance().getReference(path);
                 User user = new User(username, pass , System.currentTimeMillis() , 0,System.currentTimeMillis());
                 database.setValue(user, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                         Toast.makeText(getApplicationContext(), "push complete",Toast.LENGTH_SHORT).show();
-
                     }
                 });
 
             }else {
                 Toast.makeText(getApplicationContext(), "vui long nhap lai mat khau",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void checkLogin(String username, String usernameServer, String pass, String passServer) {
+        if (username.equals(usernameServer) == false){
+            Toast.makeText(getApplicationContext(), "Account does not exist", Toast.LENGTH_LONG).show();
+        }else{
+            if (pass.equals(passServer) == false){
+                Toast.makeText(getApplicationContext(),"Incorrect password",Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getApplicationContext(),"Login Success",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+                startActivity(intent);
             }
         }
     }

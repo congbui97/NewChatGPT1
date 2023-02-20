@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
         ChatActivity.OpenAI api = retrofit.create(ChatActivity.OpenAI.class);
 
+//        4097 tokens,
         String requestJson =
                 "{" +
                         "\"model\":\"text-davinci-003\"," +
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         textSend +
                         "\"," +
                         "\"max_tokens\":3000," +
-                        "\"temperature\":0" +
+                        "\"temperature\":0.2" +
                         "}";
         Log.d("aaa", requestJson);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestJson);
