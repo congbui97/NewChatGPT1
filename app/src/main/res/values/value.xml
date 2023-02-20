@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="animation_cat">100</integer>
+    <integer name="nhinlentroi">100</integer>
+    <integer name="animation_start_cat">200</integer>
+    <integer name="nhinxuongpasswordd">150</integer>
+</resources>
