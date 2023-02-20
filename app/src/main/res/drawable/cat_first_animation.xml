@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/cat44" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat45" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat46" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat47" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat48" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat49" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat50" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat51" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat52" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat53" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat44" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat45" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat46" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat47" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat48" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat49" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat50" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat51" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat52" android:duration="@integer/animation_start_cat" />
+    <item android:drawable="@drawable/cat53" android:duration="@integer/animation_start_cat" />
+</animation-list>

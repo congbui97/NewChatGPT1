@@ -44,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     public interface OpenAI {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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"
+                "Authorization: Bearer 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"
         })
         @POST("/v1/completions")
         Call<ResponseBody> generateText(@Body RequestBody requestBody);
@@ -101,8 +101,6 @@ public class ChatActivity extends AppCompatActivity {
                     edtMessage.setText("");
                     startLoadingDialog();
                 }
-
-
             }
         });
     }

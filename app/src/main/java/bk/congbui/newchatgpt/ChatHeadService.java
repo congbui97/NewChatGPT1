@@ -210,9 +210,7 @@ public class ChatHeadService extends Service {
             }
 
             @Override
-            public void onBufferReceived(byte[] bytes) {
-                Log.d("aaa","listen result onBufferReceived");
-            }
+            public void onBufferReceived(byte[] bytes) {Log.d("aaa","listen result onBufferReceived");}
 
             @Override
             public void onEndOfSpeech() {
@@ -245,8 +243,6 @@ public class ChatHeadService extends Service {
             public void onEvent(int i, Bundle bundle) {
             }
         });
-
-
 
     }
 

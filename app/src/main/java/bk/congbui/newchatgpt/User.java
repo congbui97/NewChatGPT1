@@ -3,14 +3,20 @@ package bk.congbui.newchatgpt;
 public class User {
     private String userName;
     private String passWord;
-    private int location;
+    // thoi gian dang nhap
+    private long location;
+    // so lan tim kiem con lai
     private int pos;
 
-    public User(String userName, String passWord, int location, int pos) {
+    // ma nhap tien
+    private long keyMoney;
+
+    public User(String userName, String passWord, long location, int pos , long keyMoney) {
         this.userName = userName;
         this.passWord = passWord;
         this.location = location;
         this.pos = pos;
+        this.keyMoney = keyMoney;
     }
 
     public User() {
@@ -32,7 +38,7 @@ public class User {
         this.passWord = passWord;
     }
 
-    public int getLocation() {
+    public long getLocation() {
         return location;
     }
 
@@ -46,5 +52,13 @@ public class User {
 
     public void setPos(int pos) {
         this.pos = pos;
+    }
+
+    public long getKeyMoney() {
+        return keyMoney;
+    }
+
+    public void setKeyMoney(long keyMoney) {
+        this.keyMoney = keyMoney;
     }
 }

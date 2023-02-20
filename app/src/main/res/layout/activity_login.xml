@@ -27,18 +27,24 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
+        android:paddingHorizontal="30dp"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/edtUsername"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:hint="Username:..."
+            android:textSize="30sp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
         <EditText
             android:id="@+id/edtPassword"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:hint="Password:..."
+            android:textSize="30sp"
+            android:inputType="textPassword"
             android:layout_height="0dp"
             android:layout_weight="1"/>
         <EditText

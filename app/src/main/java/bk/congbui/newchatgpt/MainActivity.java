@@ -146,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static Call<ResponseBody> createApi(String textSend){
 
+        textSend = textSend.replace('"','\'');
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .callTimeout(2, TimeUnit.MINUTES)
                 .connectTimeout(20, TimeUnit.SECONDS)
@@ -165,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         "\"prompt\":\"" +
                         textSend +
                         "\"," +
-                        "\"max_tokens\":4000," +
+                        "\"max_tokens\":3000," +
                         "\"temperature\":0" +
                         "}";
         Log.d("aaa", requestJson);

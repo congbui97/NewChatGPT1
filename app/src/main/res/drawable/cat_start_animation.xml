@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/cat40" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat41" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat42" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat43" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat44" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat45" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat46" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat47" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat48" android:duration="@integer/animation_cat" />
+    <item android:drawable="@drawable/cat50" android:duration="@integer/animation_cat" />
+</animation-list>
