@@ -35,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
-    private ImageView imgChat , imgAssistant;
+    private ImageView imgChat , imgAssistant , imgCreateImage , imgChatAI;
     public static TextToSpeech speech;
 
     @Override
@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private void unit() {
         imgChat = findViewById(R.id.imgChat);
         imgAssistant = findViewById(R.id.imgAssistant);
+        imgCreateImage = findViewById(R.id.imgCreateImage);
+        imgChatAI = findViewById(R.id.imgChatAI);
         speech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
@@ -122,6 +124,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imgCreateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this , ImageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        imgChatAI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this , AiChatActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -144,41 +162,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static Call<ResponseBody> createApi(String textSend){
-
-        textSend = textSend.replace('"','\'');
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .callTimeout(2, TimeUnit.MINUTES)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.openai.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build()).build();
-
-        ChatActivity.OpenAI api = retrofit.create(ChatActivity.OpenAI.class);
-
-//        4097 tokens,
-        String requestJson =
-                "{" +
-                        "\"model\":\"text-davinci-003\"," +
-                        "\"prompt\":\"" +
-                        textSend +
-                        "\"," +
-                        "\"max_tokens\":3000," +
-                        "\"temperature\":0.2" +
-                        "}";
-        Log.d("aaa", requestJson);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestJson);
-
-        Call<ResponseBody> call = api.generateText(requestBody);
-
-
-        return call;
-    }
+//    public static Call<ResponseBody> createApi(String textSend){
+//
+//        textSend = textSend.replace('"','\'');
+//
+//        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+//                .callTimeout(2, TimeUnit.MINUTES)
+//                .connectTimeout(20, TimeUnit.SECONDS)
+//                .readTimeout(60, TimeUnit.SECONDS)
+//                .writeTimeout(60, TimeUnit.SECONDS);
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://api.openai.com")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .client(httpClient.build()).build();
+//
+//        ChatActivity.OpenAI api = retrofit.create(ChatActivity.OpenAI.class);
+//
+////        4097 tokens,
+//        String requestJson =
+//                "{" +
+//                        "\"model\":\"text-davinci-003\"," +
+//                        "\"prompt\":\"" +
+//                        textSend +
+//                        "\"," +
+//                        "\"max_tokens\":3000," +
+//                        "\"temperature\":0.2" +
+//                        "}";
+//        Log.d("aaa", requestJson);
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestJson);
+//
+//        Call<ResponseBody> call = api.generateText(requestBody);
+//
+//
+//        return call;
+//    }
 
 
 }

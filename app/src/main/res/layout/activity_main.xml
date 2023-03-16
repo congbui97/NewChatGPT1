@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:text="Chat"
             android:textStyle="bold"
-            android:textSize="50sp"
+            android:textSize="30sp"
             android:gravity="center"
             android:layout_height="match_parent"
             android:layout_weight="7"/>
@@ -57,7 +57,7 @@
             android:layout_width="0dp"
             android:text="Assistant"
             android:textStyle="bold"
-            android:textSize="50sp"
+            android:textSize="30sp"
             android:gravity="center"
             android:layout_height="match_parent"
             android:layout_weight="7"/>
@@ -66,6 +66,60 @@
             android:id="@+id/imgAssistant"
             android:layout_width="0dp"
             android:src="@drawable/baseline_assistant_24"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_margin="30dp"
+        android:background="@drawable/buttonimg">
+
+        <TextView
+            android:id="@+id/tvImage"
+            android:layout_width="0dp"
+            android:text="Image"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_weight="7"/>
+
+        <ImageView
+            android:id="@+id/imgCreateImage"
+            android:layout_width="0dp"
+            android:src="@drawable/baseline_image_24"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_margin="30dp"
+        android:background="@drawable/buttonimg">
+
+        <TextView
+            android:id="@+id/tvChatAI"
+            android:layout_width="0dp"
+            android:text="Chat AI"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_weight="7"/>
+
+        <ImageView
+            android:id="@+id/imgChatAI"
+            android:layout_width="0dp"
+            android:src="@drawable/baseline_ai_24"
             android:layout_height="match_parent"
             android:layout_weight="3"/>
 

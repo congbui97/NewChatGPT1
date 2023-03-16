@@ -12,10 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,19 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChatActivity extends AppCompatActivity {
-
-//    public interface OpenAI {
-//        @Headers({
-//                "Content-Type: application/json",
-//                "Authorization: Bearer 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",
-//                "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
-//        })
-//        @POST("/v1/completions")
-//        Call<ResponseBody> generateText(@Body RequestBody requestBody);
-//    }
+public class AiChatActivity extends AppCompatActivity {
     private OpenAICallApiClass openAI;
-
     private ListView lvMessage ;
     private List<Message> data;
     private MessageAdapter adapter;
@@ -51,22 +36,20 @@ public class ChatActivity extends AppCompatActivity {
     private String textSend = "";
     private EditText edtMessage;
     private AlertDialog dialog;
-
+    public int PERSON = 0;
+    public int OPEN_AI = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_ai_chat);
         unit();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setOnclick();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myref = database.getReference();;
     }
 
     private void unit() {
@@ -81,26 +64,11 @@ public class ChatActivity extends AppCompatActivity {
         openAI = new OpenAICallApiClass();
     }
 
-    private void setOnclick() {
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSend = edtMessage.getText().toString();
-                if (textSend != null && textSend.equals("")==false ){
-
-                    addAdapter(new Message(textSend , 0));
-                    openAI.callApiText(textSend);
-                    edtMessage.setText("");
-                    startLoadingDialog();
-                }
-            }
-        });
-    }
-
-    private  void  callApi(){
+    public   String callApiChat(String textSend){
+        final String[] url = {""};
 
         //set time out for api
-        Call<ResponseBody> call = openAI.createApiText(textSend);
+        Call<ResponseBody> call = openAI.createApiChat(textSend);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -115,12 +83,11 @@ public class ChatActivity extends AppCompatActivity {
                             text = text.replace("[","");
                             text = text.replace("]","");
                             JSONObject resultText = new JSONObject(text);
-                            String lastValue = resultText.getString("text");
+                            String lastValue = resultText.getString("url");
                             if (lastValue.startsWith("\n\n")){
                                 lastValue = lastValue.substring(2);
                             }
-                            addAdapter(new Message(lastValue , 1));
-                            dismissDialog();
+                            url[0] = lastValue;
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -136,13 +103,9 @@ public class ChatActivity extends AppCompatActivity {
                     // Handle error response
                     try {
                         String error = response.errorBody().string();
-                        addAdapter(new Message("Server hiện đang quá tải, vui lòng thử lại..." , 2));
-                        dismissDialog();
-
-
-//                        tvResult.setText(error);
+                        Log.d("aaa","Server hiện đang quá tải, vui lòng thử lại...");
                         Log.d("aaa",error);
-                        // Log or display the error message
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -154,18 +117,31 @@ public class ChatActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 // Handle failure
                 Log.d("aaa",call.toString());
-                data.add(new Message("Vui lòng kiểm tra mạng...",2));
-                adapter.notifyDataSetChanged();
-                lvMessage.setSelection(data.size() - 1);
-                dismissDialog();
+
+            }
+        });
+
+        return url[0];
+    }
+
+    private void setOnclick() {
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textSend = edtMessage.getText().toString();
+                if (textSend != null && textSend.equals("")==false ){
+
+                    addAdapter(new Message(textSend , 0));
+                    callApiChat(createDataForApi(data));
+                    edtMessage.setText("");
+                    startLoadingDialog();
+                }
             }
         });
     }
 
-
-
     public void startLoadingDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(AiChatActivity.this);
         LayoutInflater inflater =  getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.loading_layout,null));
         builder.setCancelable(true);
@@ -177,10 +153,31 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void addAdapter(Message message){
-        MainActivity.speech.speak(textSend,TextToSpeech.QUEUE_FLUSH,null);
+        MainActivity.speech.speak(textSend, TextToSpeech.QUEUE_FLUSH,null);
         data.add(message);
         adapter.notifyDataSetChanged();
         lvMessage.setSelection(data.size() - 1);
+    }
+
+    public String createDataForApi(List<Message> questions){
+        String result = "";
+        String data = "";
+        for (int i = 0; i < questions.size(); i++) {
+            Message que = questions.get(i);
+            if (que.getWhoSend() == PERSON){
+                data = "{\"role\":\"user\",\"content\":\""+ que.getTextMessage() +"\"}";
+            }else if (que.getWhoSend() == OPEN_AI){
+                data = "{\"role\":\"assistant\",	\"content\":\""+ que.getTextMessage() + "\"}";
+            }
+
+            if (i < questions.size() - 2){
+                result = result + data +",";
+            }else {
+                result = result + data;
+            }
+        }
+
+        return result;
     }
 
 }
