@@ -20,13 +20,14 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public class OpenAICallApiClass {
+    public static String API_KEY = "";
 
     public OpenAICallApiClass() {}
 
     public interface OpenAI {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/completions")
@@ -37,7 +38,7 @@ public class OpenAICallApiClass {
     interface OpenAiApiService {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/images/generations")
@@ -47,7 +48,7 @@ public class OpenAICallApiClass {
     public interface OpenAIChatService {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/chat/completions")

@@ -40,6 +40,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         Message message = lstMessage.get(position);
         TextView titleText =  rowView.findViewById(R.id.tvMessage);
         LinearLayout lineMessage = rowView.findViewById(R.id.lineMessage);
+        LinearLayout lineLeft = rowView.findViewById(R.id.lineLeft);
+        LinearLayout lineRight = rowView.findViewById(R.id.lineRight);
         titleText.setText(message.getTextMessage());
 
 
@@ -47,9 +49,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             lineMessage.setGravity(Gravity.END);
             titleText.setBackgroundResource(R.drawable.textview_person_style);
             titleText.setTextColor(ContextCompat.getColor(context , R.color.white));
+            lineRight.setVisibility(View.GONE);
+            lineLeft.setVisibility(View.VISIBLE);
+
         }else {
             lineMessage.setGravity(Gravity.START);
             titleText.setBackgroundResource(R.drawable.textview_ai_style);
+            lineLeft.setVisibility(View.GONE);
+            lineRight.setVisibility(View.VISIBLE);
             if (message.getWhoSend() == 1){
                 titleText.setTextColor(ContextCompat.getColor(context,R.color.black));
             }else if (message.getWhoSend() == 2){

@@ -64,7 +64,7 @@ public class AiChatActivity extends AppCompatActivity {
         openAI = new OpenAICallApiClass();
     }
 
-    public   String callApiChat(String textSend){
+    public   void callApiChat(String textSend){
         final String[] url = {""};
 
         //set time out for api
@@ -83,12 +83,15 @@ public class AiChatActivity extends AppCompatActivity {
                             text = text.replace("[","");
                             text = text.replace("]","");
                             JSONObject resultText = new JSONObject(text);
-                            String lastValue = resultText.getString("url");
+
+                            String lastValue = resultText.getJSONObject("message").getString("content");
                             if (lastValue.startsWith("\n\n")){
                                 lastValue = lastValue.substring(2);
                             }
-                            url[0] = lastValue;
+                            addAdapter(new Message(lastValue , 1));
+                            dismissDialog();
                         } catch (JSONException e) {
+                            dismissDialog();
                             throw new RuntimeException(e);
                         }
 
@@ -105,6 +108,7 @@ public class AiChatActivity extends AppCompatActivity {
                         String error = response.errorBody().string();
                         Log.d("aaa","Server hiện đang quá tải, vui lòng thử lại...");
                         Log.d("aaa",error);
+                        dismissDialog();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -120,8 +124,6 @@ public class AiChatActivity extends AppCompatActivity {
 
             }
         });
-
-        return url[0];
     }
 
     private void setOnclick() {
@@ -164,13 +166,14 @@ public class AiChatActivity extends AppCompatActivity {
         String data = "";
         for (int i = 0; i < questions.size(); i++) {
             Message que = questions.get(i);
+            que.setTextMessage(que.getTextMessage().replace("\n",""));
             if (que.getWhoSend() == PERSON){
                 data = "{\"role\":\"user\",\"content\":\""+ que.getTextMessage() +"\"}";
             }else if (que.getWhoSend() == OPEN_AI){
-                data = "{\"role\":\"assistant\",	\"content\":\""+ que.getTextMessage() + "\"}";
+                data = "{\"role\":\"assistant\",\"content\":\""+ que.getTextMessage() + "\"}";
             }
 
-            if (i < questions.size() - 2){
+            if (i < questions.size() - 1){
                 result = result + data +",";
             }else {
                 result = result + data;
