@@ -27,7 +27,7 @@ public class OpenAICallApiClass {
     public interface OpenAI {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/completions")
@@ -38,7 +38,7 @@ public class OpenAICallApiClass {
     interface OpenAiApiService {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/images/generations")
@@ -48,7 +48,7 @@ public class OpenAICallApiClass {
     public interface OpenAIChatService {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/chat/completions")
@@ -140,40 +140,14 @@ public class OpenAICallApiClass {
                 .baseUrl("https://api.openai.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build()).build();
-
         OpenAIChatService api = retrofit.create(OpenAIChatService.class);
 
 //        4097 tokens,
-//        String requestJson =
-//                "{" +
-//                        "\"model\":\"gpt-3.5-turbo\"," +
-//                        "\"messages\":[{" +
-//                        "\"role\":" +
-//                        "\"user\" , " +
-//                        "\"content\":" +
-//                        "\"" +
-//                        textSend +
-//                        "\"" +
-//                        "}]" +
-//                        "}";
 
-        String requestJson =
-                "{" +
-                        "\"model\":\"gpt-3.5-turbo\"," +
+
+        String requestJson = "{" + "\"model\":\"gpt-3.5-turbo\"," +
                         "\"messages\":[" +
-//                        "\"role\":\"user\",	\"content\":\"Xin chào! \"}," +
-//                        "{\"role\":\"assistant\",	\"content\":\"Xin chào! Tôi là trợ lý ảo của bạn, có gì tôi có thể giúp đỡ?\"}," +
-////                        "\"role\":\"user\",	\"content\”:\”Bạn tên là gì?\""+
-
-
-//                        "{\"role\":" +
-//                        "\"user\" , " +
-//                        "\"content\":" +
-//                        "\"" +
-                        textSend +
-//                        "\"" +
-//                        "}" +
-                        "]}";
+                        textSend + "]}";
         Log.d("aaa", requestJson);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestJson);
 

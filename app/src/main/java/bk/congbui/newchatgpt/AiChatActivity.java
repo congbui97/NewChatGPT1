@@ -65,8 +65,6 @@ public class AiChatActivity extends AppCompatActivity {
     }
 
     public   void callApiChat(String textSend){
-        final String[] url = {""};
-
         //set time out for api
         Call<ResponseBody> call = openAI.createApiChat(textSend);
 
@@ -113,7 +111,6 @@ public class AiChatActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 
@@ -179,7 +176,6 @@ public class AiChatActivity extends AppCompatActivity {
                 result = result + data;
             }
         }
-
         return result;
     }
 
