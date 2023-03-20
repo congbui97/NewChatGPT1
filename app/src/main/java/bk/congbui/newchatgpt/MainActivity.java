@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,8 @@ import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -228,6 +231,22 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(activity , LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         activity.startActivity(intent);
+
+                        Button btnDialog;
+                        Dialog  customDialog;
+                        //Initialize Custom Dialog Box
+                        customDialog = new Dialog(context);
+                        customDialog.setContentView(R.layout.message_login_layout);
+                        customDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                        Button btnSubmit = customDialog.findViewById(R.id.btnSubmit);
+                        btnSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(context,"You Click On Submit Button",Toast.LENGTH_SHORT).show();
+                                customDialog.dismiss();
+                            }
+                        });
                     }
                 }
 
