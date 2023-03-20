@@ -50,6 +50,7 @@ public class AiChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setOnclick();
+        MainActivity.checkLogin(this , AiChatActivity.this);
     }
 
     private void unit() {
@@ -67,7 +68,6 @@ public class AiChatActivity extends AppCompatActivity {
     public   void callApiChat(String textSend){
         //set time out for api
         Call<ResponseBody> call = openAI.createApiChat(textSend);
-
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

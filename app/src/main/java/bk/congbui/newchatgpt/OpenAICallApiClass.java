@@ -27,7 +27,7 @@ public class OpenAICallApiClass {
     public interface OpenAI {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/completions")
@@ -38,7 +38,7 @@ public class OpenAICallApiClass {
     interface OpenAiApiService {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/images/generations")
@@ -48,7 +48,7 @@ public class OpenAICallApiClass {
     public interface OpenAIChatService {
         @Headers({
                 "Content-Type: application/json",
-                "Authorization: Bearer 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",
+                "Authorization: Bearer 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",
                 "OpenAI-Organization: org-CMEjxgQapEhnZ6EoxXzam3Hp"
         })
         @POST("/v1/chat/completions")

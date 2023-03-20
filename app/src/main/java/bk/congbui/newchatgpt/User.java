@@ -6,12 +6,12 @@ public class User {
     // thoi gian dang nhap
     private long location;
     // so lan tim kiem con lai
-    private int pos;
+    private long pos;
 
     // ma nhap tien
     private long keyMoney;
 
-    public User(String userName, String passWord, long location, int pos , long keyMoney) {
+    public User(String userName, String passWord, long location, long pos , long keyMoney) {
         this.userName = userName;
         this.passWord = passWord;
         this.location = location;
@@ -42,15 +42,15 @@ public class User {
         return location;
     }
 
-    public void setLocation(int location) {
+    public void setLocation(long location) {
         this.location = location;
     }
 
-    public int getPos() {
+    public long getPos() {
         return pos;
     }
 
-    public void setPos(int pos) {
+    public void setPos(long pos) {
         this.pos = pos;
     }
 

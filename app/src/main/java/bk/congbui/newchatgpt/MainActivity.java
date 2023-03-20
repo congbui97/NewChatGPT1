@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +19,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imgChat , imgAssistant , imgCreateImage , imgChatAI;
     public static TextToSpeech speech;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        checkLogin(this , MainActivity.this);
     }
 
     private void checkPermissions(String permission) {
@@ -198,5 +208,34 @@ public class MainActivity extends AppCompatActivity {
 //        return call;
 //    }
 
+    public static void checkLogin(Context context , Activity activity){
+        SharedPreferences sharedPref = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        DatabaseReference mReference;
+        String userName = sharedPref.getString("userName","");
+        String passWord = sharedPref.getString("passWord", "");
+        long location = sharedPref.getLong("location" , 0);
+        if (userName.equals("") == false){
+            String path = "user/" + userName;
+            mReference = FirebaseDatabase.getInstance().getReference(path);
+            mReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    if (user.getUserName().equals(userName) && user.getPassWord().equals(passWord) && location != user.getLocation()){
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.clear();
+                        editor.apply();
+                        Intent intent = new Intent(activity , LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        activity.startActivity(intent);
+                    }
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+
+    }
 }

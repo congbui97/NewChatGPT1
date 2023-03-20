@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class LoginActivity extends AppCompatActivity {
     //list image tu trai qua phai
     //trai  len tren 13  16 17 18 19 20 21 22 23 24 25 26
@@ -42,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView rocketImage;
     // mode login (0) or mode sign up (1)
     private int mode;
+    private SharedPreferences sharedPref;
+
+    private DatabaseReference mReference;
 
     private int[] anilation_list = new int[]{
             R.drawable.cat12,R.drawable.cat11,
@@ -147,55 +154,65 @@ public class LoginActivity extends AppCompatActivity {
         String username = edtUsername.getText().toString().trim();
         String pass = edtPassword.getText().toString();
         String path = "user/" + username;
+        mReference = FirebaseDatabase.getInstance().getReference(path);
 
         if (mode == LOGIN_MODE){
-            DatabaseReference mReference = FirebaseDatabase.getInstance().getReference(path);
-            mReference.addValueEventListener(new ValueEventListener() {
+            mReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String usernameServer = snapshot.child("userName").getValue(String.class);
-//                    long keyMoney = snapshot.child("keyMoney").getValue(Long.class);
-//                    long location = snapshot.child("location").getValue(Long.class);
-//                    int pos = snapshot.child("pos").getValue(Integer.class);
-                    String passServer = snapshot.child("passWord").getValue(String.class);
-                    checkLogin(username,usernameServer,pass,passServer);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (!task.isSuccessful()) {
+                        Log.e("firebase", "Error getting data", task.getException());
+                    }
+                    else {
+                        Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                        HashMap hp = (HashMap) task.getResult().getValue();
+                        String usernameServer = (String) hp.get("userName");
+                        long keyMoney = (long) hp.get("keyMoney");
+                        long location = (long) hp.get("location");
+                        long pos = (long) hp.get("pos");
+                        String passServer = (String) hp.get("passWord");
+                        User user = new User(usernameServer ,passServer , location , pos , keyMoney );
+                        checkLogin(username,pass,user);
+                    }
                 }
             });
-
-
         }else if (mode == SIGN_UP_MODE){
             String repass = edtRePassword.getText().toString();
             if (pass.equals(repass) == true){
-                DatabaseReference database = FirebaseDatabase.getInstance().getReference(path);
                 User user = new User(username, pass , System.currentTimeMillis() , 0,System.currentTimeMillis());
-                database.setValue(user, new DatabaseReference.CompletionListener() {
+                mReference.setValue(user, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        Toast.makeText(getApplicationContext(), "push complete",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Sign Up Success",Toast.LENGTH_SHORT).show();
+                        saveUser(user.getUserName(),user.getPassWord(),user.getLocation());
+                        Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+                        startActivity(intent);
                     }
                 });
-
             }else {
                 Toast.makeText(getApplicationContext(), "vui long nhap lai mat khau",Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void checkLogin(String username, String usernameServer, String pass, String passServer) {
-        if (username.equals(usernameServer) == false){
+    private void checkLogin(String username,String pass, User user) {
+        if (username.equals(user.getUserName()) == false){
             Toast.makeText(getApplicationContext(), "Account does not exist", Toast.LENGTH_LONG).show();
         }else{
-            if (pass.equals(passServer) == false){
+            if (pass.equals(user.getPassWord()) == false){
                 Toast.makeText(getApplicationContext(),"Incorrect password",Toast.LENGTH_LONG).show();
             }else {
-                Toast.makeText(getApplicationContext(),"Login Success",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(LoginActivity.this , MainActivity.class);
-                startActivity(intent);
+                user.setLocation(System.currentTimeMillis());
+                mReference.setValue(user, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                        Toast.makeText(getApplicationContext(), "Login Success",Toast.LENGTH_SHORT).show();
+                        saveUser(user.getUserName(),user.getPassWord(),user.getLocation());
+                        Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
             }
         }
     }
@@ -212,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
         rocketAnimation = (AnimationDrawable) rocketImage.getBackground();
         setAnimatiion(R.drawable.cat_first_animation);
         mode = LOGIN_MODE;
+        sharedPref = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
     }
 
     private void init(){
@@ -234,5 +252,24 @@ public class LoginActivity extends AppCompatActivity {
         }else {
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (sharedPref.getString("userName","").equals("") == false &&
+                sharedPref.getString("passWord","").equals("") == false){
+            Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void saveUser(String User , String passWord, long location){
+        SharedPreferences.Editor myEdit = sharedPref.edit();
+        myEdit.putString("userName" , User);
+        myEdit.putString("passWord" , passWord);
+        myEdit.putLong("location" , location);
+        myEdit.apply();
+
     }
 }
